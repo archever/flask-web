@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  pg: 
+    image: postgres
+    environment:
+      POSTGRES_DB: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_USER: archever
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./_data/pg:/var/lib/postgresql/data
+    ports:
+      - 127.0.0.1:5432:5432
+
+  geoip:
+    image: fiorix/freegeoip
+    ports:
+      - 127.0.0.1:8080:8080
+
+  redis:
+    image: redis
+    ports:
+      - 127.0.0.1:6379:6379
+    volumes:
+      - ./_data/redis:/data/
+  
+  adminer:
+    image: adminer
+    ports:
+      - 127.0.0.1:8080:8080

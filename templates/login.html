@@ -1,0 +1,12 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h1>login</h1>
+<form action="/user/login">
+    <label for="email">email</label>
+    <input type="text">
+    <label for="password">password</label>
+    <input type="password">
+    <button>登录</button>
+</form>
+{% endblock %}

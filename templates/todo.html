@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h1>todo demo</h1>
+<input id="input-msg" type="text">
+<button id="btn-send">保存</button>
+<div class="tasks">
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $("#btn-send").on("click", (e) => {
+        var val = $("#input-msg").val()
+        if (!val) return
+        $.ajax({
+            method: "POST",
+            url: "/api/todo/v1/item",
+            data: {
+                task: val,
+            }
+        }).then((resp) => {
+            return resp.json()
+        }).then((res) => {
+            console.log(res)
+        })
+    })
+</script>
+{% endblock %}
