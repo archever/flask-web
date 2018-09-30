@@ -3,8 +3,6 @@
 import os
 import logging
 from dotenv import load_dotenv
-import peewee as pw
-import redis
 load_dotenv(".env")
 
 # const
@@ -16,7 +14,5 @@ PWD_SALT = os.getenv("PWD_SALT", "pqwoeiruty")
 PG_HOST = os.getenv("PG_HOST", "127.0.0.1")
 PG_USER = os.getenv("PG_USER", "demo")
 PG_PWD = os.getenv("PG_USER", "demo")
-
-# instance
-db = pw.PostgresqlDatabase('demo', **{'host': PG_HOST, 'user': PG_USER, 'password': PG_PWD})
-redis = redis.Connection()
+TESTING = os.getenv("TESTING", "True")
+DEBUG = os.getenv("TESTING", "True")

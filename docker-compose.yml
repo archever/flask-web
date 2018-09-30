@@ -16,7 +16,7 @@ services:
   geoip:
     image: fiorix/freegeoip
     ports:
-      - 127.0.0.1:8080:8080
+      - 127.0.0.1:9080:9080
 
   redis:
     image: redis

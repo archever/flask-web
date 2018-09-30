@@ -1,0 +1,12 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h1>regist</h1>
+<form action="/user/regist">
+    <label for="email">email</label>
+    <input type="email" required>
+    <label for="password">password</label>
+    <input type="password" required>
+    <button>注册</button>
+</form>
+{% endblock %}

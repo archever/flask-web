@@ -4,3 +4,4 @@
 _data
 **/_tmp*
 .env
+.vscode

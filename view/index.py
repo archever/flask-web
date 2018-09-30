@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template, redirect, current_app, jsonify
 
 bp = Blueprint("index", __name__)
 
@@ -9,16 +9,18 @@ def index():
     return render_template("index.html")
 
 
-@bp.route("/user/login", methods=["POST"])
-def login():
-    email = request.form.get("email")
-    password = request.form.get("password")
-    if not email or not password:
-        raise AppError("参数错误")
-
-    user = UserCtr.login(email, password)
-    sid = session.login(user)
-    return redirect("/")
+@bp.route("/url_map")
+def url_map():
+    """
+    路由列表
+    """
+    data = []
+    for i in list(current_app.url_map.iter_rules()):
+        data.append({
+            'rule': i.rule,
+            'endpoint': i.endpoint,
+        })
+    return jsonify(success=True, data=data)
 
 
 @bp.route("/demo/ws")

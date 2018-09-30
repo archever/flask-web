@@ -1,14 +1,13 @@
-# coding: utf-8
+# coding=utf-8
 """
 请求日志
 """
 
 import time
-import logging
-from flask import request
+from flask import request, Blueprint
+from libs.log import getLogger
 
-
-logger = logging.getLogger(__name__)
+log = getLogger('access')
 
 
 def after_request_access(resp):
@@ -32,26 +31,26 @@ def after_request_access(resp):
     # json 返回值
     if 'json' in resp.headers.get('content-type', ''):
         if req_data:
-            logger.info(
+            log.info(
                 '%s %s:%s %.2fms \ncookies: %s \nreq: %s \nresp: %s',
                 resp.status_code,
                 request.method, request.full_path,
-                req_time, request.cookies, req_data, resp.data
+                req_time, request.cookies, req_data, resp.data.decode('utf-8')
             )
         else:
-            logger.info(
+            log.info(
                 '%s %s:%s %.2fms \ncookies: %s \nresp: %s', resp.status_code,
                 request.method, request.full_path, req_time, request.cookies, resp.data
             )
     # 非 json 返回值
     else:
         if req_data:
-            logger.info(
+            log.info(
                 '%s %s:%s %.2fms \ncookies: %s \nreq: %s', resp.status_code,
                 request.method, request.full_path, req_time, request.cookies, req_data
             )
         else:
-            logger.info(
+            log.info(
                 '%s %s:%s %.2fms \ncookies: %s',
                 resp.status_code, request.method, request.full_path, req_time,
                 request.cookies)
@@ -71,4 +70,4 @@ def log_error(err):
     打印错误日志
     """
     if err:
-        logger.error(str(err), exc_info=err)
+        log.error(err, exc_info=err)

@@ -1,26 +1,35 @@
 # coding=utf-8
 
-import logging
 import sys
+import logging
+import logging.handlers
 from colorlog import ColoredFormatter
+from config import LOG_DIR, LOG_LEVEL
+
+_inited = False
+app_name = 'demo'
+opt = [
+    ('requests', logging.WARN),
+    ('werkzeug', logging.WARN),
+    ('PIL', logging.WARN),
+    ('raven.base.Client', logging.WARN),
+    ('geventwebsocket.handler', logging.WARN),
+]
 
 
-def init_log(log_dir, log_level, opt):
-    """
-    :param str log_dir: 
-    :param logging.DEBUG|... log_level: 
-    :param list opt: [
-        ('requests', logging.WARN),
-        ('werkzeug', logging.WARN),
-        ('sqlalchemy', logging.WARN),
-        ('sqlalchemy.engine.base.Engine', logging.WARN),
-        ('PIL', logging.WARN),
-    ]
-    """
-    if log_dir:
+def init_log(opt=None):
+    global _inited
+    if _inited:
+        return
+    _inited = True
+    if not opt:
+        opt = []
+    log_level = LOG_LEVEL
+    log_path = LOG_DIR
+
+    if log_path:
         ch = logging.handlers.RotatingFileHandler(
-            '{}/{}_app.log'.format(log_path, app.name), 'w',
-            10 * 1024 * 1024, 20)
+            '{}/{}_app.log'.format(log_path, app_name), 'w', 10 * 1024 * 1024, 20)
     else:
         ch = logging.StreamHandler(sys.stdout)
     ch.setFormatter(ColoredFormatter(
@@ -33,11 +42,15 @@ def init_log(log_dir, log_level, opt):
             'CRITICAL': 'red,bg_blue'
         }
     ))
-
     logging.root.setLevel(log_level)
     logging.root.addHandler(ch)
-
     for logger, level in opt:
         log = logging.getLogger(logger)
         log.setLevel(level)
         log.addHandler(logging.NullHandler(level=logging.WARN))
+
+
+def getLogger(name):
+    global opt
+    init_log(opt)
+    return logging.getLogger(name)

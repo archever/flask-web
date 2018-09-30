@@ -3,3 +3,4 @@
 
 class AppError(Exception):
     code = 0
+    http_code = 400

@@ -1,5 +1,6 @@
+
 from peewee import *
-from config import db as database
+from config.ext import db as database
 
 
 class UnknownField(object):
@@ -16,6 +17,7 @@ class User(BaseModel):
     id = IntegerField(constraints=[SQL("DEFAULT nextval('user_id_seq'::regclass)")])
     nick = CharField()
     status = IntegerField(constraints=[SQL("DEFAULT 0")])
+    sid = CharField(constraints=[SQL("DEFAULT ''")])
 
     class Meta:
         table_name = 'user'
