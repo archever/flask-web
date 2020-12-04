@@ -37,5 +37,6 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
+    print("listen on %s:%s" % (HOST, PORT))
     http_server = WSGIServer((HOST, PORT), app, handler_class=WebSocketHandler)
     http_server.serve_forever()

@@ -3,4 +3,5 @@ python-dotenv
 gevent
 gevent-websocket
 colorlog
-psycopg2
+peewee
+redis
